@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UTFV-Bot</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f1f1f1;
+    }
+    .chat-container {
+      max-width: 600px;
+      margin: 50px auto;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    }
+    .chat-header {
+      background-color: #39B54A;
+      color: #fff;
+      padding: 20px;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+    }
+    .chat-body {
+      padding: 20px;
+      height: 300px;
+      overflow-y: scroll;
+    }
+    .chat-input {
+      display: flex;
+      padding: 20px;
+      border-top: 1px solid #e6e6e6;
+    }
+    .chat-input input {
+      flex-grow: 1;
+      border: none;
+      outline: none;
+      padding: 10px;
+      font-size: 16px;
+    }
+    .chat-input button {
+      background-color: #39B54A;
+      color: #fff;
+      border: none;
+      outline: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="chat-container">
+    <div class="chat-header">
+      <h4>UTFV-Bot: Asistente Virtual para la Mejora de Servicios Estudiantiles en Línea</h4>
+    </div>
+    <div class="chat-body" id="chat-body">
+      <!-- Chat messages will be displayed here -->
+    </div>
+    <div class="chat-input">
+      <input type="text" placeholder="Haz tu pregunta..." id="chat-input">
+      <button onclick="sendQuestion()">Enviar</button>
+    </div>
+  </div>
+
+  <script>
+    const chatBody = document.getElementById('chat-body');
+    const chatInput = document.getElementById('chat-input');
+
+    // Base de datos de preguntas y respuestas
+    const QADatabase = [
+      {
+        question: "¿Cuáles son los requisitos de admisión a la universidad?",
+        answer: "Para los requisitos de admisión, la universidad evalúa el expediente académico, puntaje en exámenes de ingreso, cartas de recomendación y, en algunos casos, una entrevista personal. Algunos de los documentos típicamente requeridos son: acta de nacimiento, certificado de estudios, identificación oficial, comprobante de domicilio y, en su caso, carta de motivos."
+      },
+      {
+        question: "¿Cómo puedo aplicar para ingresar a la universidad?",
+        answer: "El proceso de aplicación incluye presentar la solicitud de ingreso, enviar los documentos requeridos y realizar el pago de la cuota correspondiente dentro de las fechas establecidas en la convocatoria de admisión. Las fechas importantes a tener en cuenta son el periodo de registro, pago de matrícula y el inicio del ciclo escolar."
+      },
+      {
+        question: "¿Cuáles son los programas académicos que ofrece la universidad?",
+        answer: "Contamos con una amplia oferta de licenciaturas y posgrados en diversas áreas del conocimiento. Cada programa académico tiene un plan de estudios que incluye materias obligatorias y optativas, así como requisitos de graduación. Los estudiantes pueden consultar la información detallada de cada carrera en nuestro sitio web o a través de nuestros canales de atención."
+      },
+      {
+        question: "¿Cómo puedo inscribirme en los cursos que necesito?",
+        answer: "La inscripción a cursos se realiza a través del portal estudiantil en las fechas establecidas en el calendario académico. Los estudiantes deben seguir los pasos indicados para seleccionar y registrar las materias de su interés, de acuerdo con el plan de estudios de su programa."
+      }
+    ];
+
+    function sendQuestion() {
+      const question = chatInput.value.trim();
+      if (question !== '') {
+        displayMessage(question, 'user');
+        chatInput.value = '';
+        setTimeout(() => {
+          const answer = getAnswer(question);
+          displayMessage(answer, 'bot');
+        }, 1000);
+      }
+    }
+
+    function getAnswer(question) {
+      // Buscar la respuesta en la base de datos de preguntas y respuestas
+      const matchingQuestion = QADatabase.find(item => item.question.toLowerCase().includes(question.toLowerCase()));
+      if (matchingQuestion) {
+        return matchingQuestion.answer;
+      } else {
+        return "Lo siento, no tengo una respuesta a esa pregunta.";
+      }
+    }
+
+    function displayMessage(message, sender) {
+      const messageElement = document.createElement('div');
+      messageElement.classList.add('message', sender);
+      messageElement.textContent = message;
+      chatBody.appendChild(messageElement);
+      chatBody.scrollTop = chatBody.scrollHeight;
+    }
+  </script>
+</body>
+</html>
